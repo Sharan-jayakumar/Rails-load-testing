@@ -5,6 +5,9 @@ services:
       - "3000:3000"
     environment:
       - RAILS_ENV=development
+      - DATABASE_URL=postgresql://postgres:password@db:5432/loadtesting
+    depends_on:
+      - db
     volumes:
       - .:/rails
     deploy:
@@ -16,3 +19,17 @@ services:
           cpus: "1.0"
           memory: 2G
     command: "rails server -b 0.0.0.0"
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=loadtesting
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:

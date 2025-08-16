@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   # API routes
   namespace :api do
     get 'calculate-date', to: 'date_calculations#calculate_date'
+    resources :tasks
   end
 
   # Defines the root path route ("/")
