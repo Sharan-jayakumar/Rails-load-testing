@@ -1,0 +1,31 @@
+# Git
+.git
+.gitignore
+
+# Logs
+log/*
+*.log
+
+# Temporary files
+tmp/*
+!tmp/.keep
+
+# Environment variables
+.env
+.env.*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker files
+Dockerfile*
+docker-compose*.yml
+.dockerignore
