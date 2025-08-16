@@ -6,6 +6,8 @@ services:
     environment:
       - RAILS_ENV=development
       - DATABASE_URL=postgresql://postgres:password@db:5432/loadtesting
+      - WEB_CONCURRENCY=2
+      - RAILS_MAX_THREADS=2
     depends_on:
       - db
     volumes:
@@ -13,11 +15,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1.0"
-          memory: 2G
+          cpus: "2.0"
+          memory: 4G
         reservations:
-          cpus: "1.0"
-          memory: 2G
+          cpus: "2.0"
+          memory: 4G
     command: "rails server -b 0.0.0.0"
 
   db:
