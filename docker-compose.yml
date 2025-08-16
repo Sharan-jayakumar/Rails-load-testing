@@ -5,14 +5,16 @@ services:
       - "3000:3000"
     environment:
       - RAILS_ENV=development
+      - WEB_CONCURRENCY=2
+      - RAILS_MAX_THREADS=2
     volumes:
       - .:/rails
     deploy:
       resources:
         limits:
-          cpus: "1.0"
-          memory: 2G
+          cpus: "2.0"
+          memory: 4G
         reservations:
-          cpus: "1.0"
-          memory: 2G
+          cpus: "2.0"
+          memory: 4G
     command: "rails server -b 0.0.0.0"

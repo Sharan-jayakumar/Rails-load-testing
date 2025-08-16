@@ -14,14 +14,18 @@
 # Global VM Lock (GVL) it has diminishing returns and will degrade the
 # response time (latency) of the application.
 #
-# The default is set to 3 threads as it's deemed a decent compromise between
-# throughput and latency for the average Rails application.
-#
-# Any libraries that use a connection pool or another resource pool should
-# be configured to provide at least as many connections as the number of
-# threads. This includes Active Record's `pool` parameter in `database.yml`.
-threads_count = ENV.fetch("RAILS_MAX_THREADS", 3)
+# For cluster mode with 2 CPU cores, we'll use 2 workers with 2 threads each
+# This provides good balance between throughput and resource utilization
+
+# Set the number of workers (processes) - one per CPU core
+workers ENV.fetch("WEB_CONCURRENCY", 2)
+
+# Set the number of threads per worker
+threads_count = ENV.fetch("RAILS_MAX_THREADS", 2)
 threads threads_count, threads_count
+
+# Preload the application for better performance in cluster mode
+preload_app!
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 port ENV.fetch("PORT", 3000)
@@ -32,3 +36,9 @@ plugin :tmp_restart
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
+
+# Worker timeout for graceful shutdown
+worker_timeout 3600
+
+# Worker boot timeout
+worker_boot_timeout 60
